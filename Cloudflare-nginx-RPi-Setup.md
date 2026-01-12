@@ -47,7 +47,7 @@ sudo apt update && sudo apt install -y nginx apache2-utils cloudflared
 
 ### **2️⃣ Create a password file for Basic Auth**
 ```bash
-sudo htpasswd -c /etc/nginx/.htpasswd berto
+sudo htpasswd -c /etc/nginx/.htpasswd user
 # enter password when prompted
 ```
 
@@ -65,7 +65,7 @@ server {
   server_name {yourdomain}.com;
 
   auth_basic "Restricted";
-  auth_basic_user_file /etc/nginx/.htpasswd;
+  auth_basic_{user}_file /etc/nginx/.htpasswd;
 
   location / {
     proxy_pass http://192.168.5.106:80;
@@ -120,7 +120,7 @@ Look for:
 ```bash
 curl -I http://127.0.0.1:8080
 # expect 401 Unauthorized (auth challenge)
-curl -I -u berto http://127.0.0.1:8080
+curl -I -u {user} http://127.0.0.1:8080
 # expect 200 OK
 ```
 
