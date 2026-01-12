@@ -129,7 +129,7 @@ curl -I -u {user} http://127.0.0.1:8080
 ### **6️⃣ Verify externally**
 Open an **incognito browser** and visit:
 ```
-https://{yourdomain}.tech619.com
+https://{yourdomain}.com
 ```
 ✅ You should see:  
 - A **padlock** (Cloudflare HTTPS)  
