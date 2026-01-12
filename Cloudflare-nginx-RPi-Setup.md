@@ -17,7 +17,7 @@ This setup lets you access any local service (e.g., `http://192.168.x.x:80`) thr
 ```
 Browser (you, anywhere)
      ↓ HTTPS (TLS)
-Cloudflare Edge (miner.tech619.com)
+Cloudflare Edge (yourdomain.com)
      ↓ Cloudflare Tunnel
 cloudflared (on your Raspberry Pi)
      ↓ localhost proxy
@@ -55,14 +55,14 @@ sudo htpasswd -c /etc/nginx/.htpasswd berto
 
 ### **3️⃣ Create nginx site config**
 ```bash
-sudo nano /etc/nginx/sites-available/miner
+sudo nano /etc/nginx/sites-available/projFolder
 ```
 
 Paste this:
 ```nginx
 server {
   listen 127.0.0.1:8080;
-  server_name miner.tech619.com;
+  server_name {yourdomain}.com;
 
   auth_basic "Restricted";
   auth_basic_user_file /etc/nginx/.htpasswd;
@@ -82,7 +82,7 @@ server {
 
 Enable and reload:
 ```bash
-sudo ln -s /etc/nginx/sites-available/miner /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/{yourProject} /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
@@ -99,7 +99,7 @@ tunnel: 11bfad09-a8ac-4a63-bd9a-14d63cf5ab68
 credentials-file: /etc/cloudflared/11bfad09-a8ac-4a63-bd9a-14d63cf5ab68.json
 
 ingress:
-  - hostname: miner.tech619.com
+  - hostname: {yourdomain}.com
     service: http://127.0.0.1:8080
     originRequest:
       noTLSVerify: true
@@ -112,7 +112,7 @@ sudo systemctl restart cloudflared
 sudo journalctl -u cloudflared -f
 ```
 Look for:  
-`Route propagating: miner.tech619.com → http://127.0.0.1:8080`
+`Route propagating: {yourDomain}.com → http://127.0.0.1:8080`
 
 ---
 
@@ -129,7 +129,7 @@ curl -I -u berto http://127.0.0.1:8080
 ### **6️⃣ Verify externally**
 Open an **incognito browser** and visit:
 ```
-https://miner.tech619.com
+https://{yourdomain}.tech619.com
 ```
 ✅ You should see:  
 - A **padlock** (Cloudflare HTTPS)  
@@ -157,7 +157,7 @@ proxy_busy_buffers_size 32k;
 
 ### Disable Bot Fight Mode for this domain  
 **(Cloudflare Dashboard → Security → Bots)**  
-Create a “Skip” rule for `miner.tech619.com` to avoid extra cookies.
+Create a “Skip” rule for `{yourdomain}.com` to avoid extra cookies.
 
 ---
 
